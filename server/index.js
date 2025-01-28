@@ -3,20 +3,20 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import connectDB from "./db/db.js";
 
-connectDB()
-.then(()=>{
-    app.listen(process.env.PORT||8000, ()=>{
-        console.log(`Server is running on port ${process.env.PORT} `)
-    })
-})
-.catch((err)=>{
-    console.log("Mongo db connection failed", err);
-})
+// connectDB()
+// .then(()=>{
+//     app.listen(process.env.PORT||8000, ()=>{
+//         console.log(`Server is running on port ${process.env.PORT} `)
+//     })
+// })
+// .catch((err)=>{
+//     console.log("Mongo db connection failed", err);
+// })
 
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "*",
     credentials: true
 }))
 
@@ -26,8 +26,13 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 
-//routes import
-// import userRouter from './routes/user.routes.js'
+import userRouter from './routes/user.routes.js'
 
-//routes declaration
-// app.use("/api", userRouter)
+
+app.use("/api", userRouter)
+
+app.listen(3000 , () =>{
+    console.log("Server is Running at PORT " , 3000);
+})
+
+
