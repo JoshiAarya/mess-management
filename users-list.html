@@ -3,46 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registered Users</title>
+  <title>Login with LocalStorage</title>
 </head>
 <body>
-  <h1>Registered Users</h1>
-  <h2>LocalStorage Users:</h2>
-  <ul id="localUserList"></ul>
-  <h2>Backend Users:</h2>
-  <ul id="backendUserList"></ul>
+  <h1>Login</h1>
+  <form id="loginForm">
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="submit">Login</button>
+  </form>
+  <p id="message" style="color: red;"></p>
 
   <script>
-    // Display LocalStorage Users
-    const localUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const localUserList = document.getElementById('localUserList');
-    // localStorage.clear();
+    // Example users stored in LocalStorage
+    const users = [
+      { phone: '1234567890', password: '1234' },
+      { phone: '9876543210', password: 'pass' }
+    ];
 
-    localUsers.forEach(user => {
-      const li = document.createElement('li');
-      li.textContent = `Name: ${user.name}, Phone: ${user.phone}`;
-      localUserList.appendChild(li);
+    // Store users in LocalStorage (only if not already stored)
+    if (!localStorage.getItem('users')) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    const loginForm = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const phone = document.getElementById('phone').value;
+      const password = document.getElementById('password').value;
+
+      // Retrieve users from LocalStorage
+      const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+      // Validate user
+      const user = storedUsers.find(
+        (user) => user.phone === phone && user.password === password
+      );
+
+      if (user) {
+        message.style.color = 'green';
+        message.textContent = 'Login successful!';
+        // Redirect or perform additional actions
+      } else {
+        message.style.color = 'red';
+        message.textContent = 'Invalid phone or password. Please try again.';
+      }
     });
-
-    // Fetch and Display Backend Users
-    fetch('http://localhost:3000/api/users')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to fetch backend users');
-        return response.json();
-      })
-      .then(backendUsers => {
-        const backendUserList = document.getElementById('backendUserList');
-        backendUsers.forEach(user => {
-          const li = document.createElement('li');
-          li.textContent = `Name: ${user.name}, Phone: ${user.phone}`;
-          backendUserList.appendChild(li);
-        });
-      })
-      .catch(error => {
-        console.error(error);
-        const backendUserList = document.getElementById('backendUserList');
-        backendUserList.textContent = 'Failed to fetch backend users.';
-      });
   </script>
 </body>
 </html>
