@@ -1,1 +1,103 @@
+
 @import "tailwindcss";
+
+
+
+
+body {
+  margin: -2;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+
+
+
+.container{
+
+  height: 400px;
+
+  width: 560px;
+
+  /* background: red; */
+
+  position: relative;
+
+}
+
+.content{
+
+  position: absolute;
+
+  height: 100%;
+
+  width: 100%;
+
+  top: 0;
+
+  left: 0;
+
+  /* background-color: rebeccapurple; */
+
+}
+
+.content h1{
+
+  /* border: 2px solid black; */
+  margin-top: 155px;  
+  min-height: 14px;
+  margin-left: 10px;
+  font-size: small;
+
+}
+
+.content h2{
+
+  margin-top: 16px;
+
+  margin-left: 10px;
+  margin-bottom: 48px;
+  font-size: small;
+
+}
+
+
+.line-container{
+  content: "";
+    display: block;
+    border-top: 2px solid #000; /* Change color and thickness as needed */
+}
+
+
+.option1Style {
+  margin-top: 44px;
+  margin-left: 148px;
+  width: 60px;
+}
+/* Style when Option 1 is selected */
+.option2Style {
+  margin-top: 44px;
+  margin-left: 218px;
+  width: 48px;
+}
+
+/* Style when Option 2 is selected */
+.option3Style {
+  margin-top: 44px;
+  margin-left: 276px;
+  width: 60px;
+}
+
+.option4Style {
+  margin-top: 44px;
+  margin-left: 345px;
+  width: 40px;
+}
+
+.option5Style {
+  margin-top: 44px;
+  margin-left: 395px;
+  width: 48px;
+}
