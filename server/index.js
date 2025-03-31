@@ -1,38 +1,47 @@
-import express from "express";
-import cors from "cors"
-import cookieParser from "cookie-parser"
-import connectDB from "./db/db.js";
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 
-// connectDB()
-// .then(()=>{
-//     app.listen(process.env.PORT||8000, ()=>{
-//         console.log(`Server is running on port ${process.env.PORT} `)
-//     })
-// })
-// .catch((err)=>{
-//     console.log("Mongo db connection failed", err);
-// })
+import userRoutes from './routes/userRoutes.js';
+import subscriptionRoutes from './routes/subscriptionRoutes.js';
+import menuRoutes from './routes/menuRoutes.js';
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 
+// Middleware
+app.use(express.json());
 app.use(cors({
-    origin: "*",
-    credentials: true
-}))
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true
+}));
+app.use(cookieParser());
 
-app.use(express.json({limit:"16kb"}))
-app.use(express.urlencoded({extended: true, limit:"16kb"}))
-app.use(express.static("public"))
-app.use(cookieParser())
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/menu', menuRoutes);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
 
-import userRouter from './routes/user.routes.js'
-
-
-app.use("/api", userRouter)
-
-app.listen(3000 , () =>{
-    console.log("Server is Running at PORT " , 3000);
-})
-
-
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // Start server
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+  });
