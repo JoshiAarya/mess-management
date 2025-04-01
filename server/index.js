@@ -11,6 +11,15 @@ import menuRoutes from './routes/menuRoutes.js';
 // Load environment variables
 dotenv.config();
 
+// Log environment variables status (without exposing sensitive info)
+console.log('Environment variables loaded:');
+console.log('- PORT:', process.env.PORT ? 'Set ✓' : 'Not set ✗');
+console.log('- MONGODB_URI:', process.env.MONGODB_URI ? 'Set ✓' : 'Not set ✗');
+console.log('- JWT_SECRET:', process.env.JWT_SECRET ? 'Set ✓' : 'Not set ✗');
+console.log('- CLIENT_URL:', process.env.CLIENT_URL ? 'Set ✓' : 'Not set ✗');
+console.log('- NODE_ENV:', process.env.NODE_ENV || 'development');
+console.log('- ADMIN_KEY:', process.env.ADMIN_KEY ? 'Set ✓' : 'Not set ✗');
+
 const app = express();
 
 // Middleware
